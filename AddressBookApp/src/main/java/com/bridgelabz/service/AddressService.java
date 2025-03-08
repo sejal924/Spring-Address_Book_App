@@ -1,6 +1,7 @@
 package com.bridgelabz.service;
 
 import com.bridgelabz.dto.ContactDTO;
+import com.bridgelabz.exception.ContactNotFoundException;
 import com.bridgelabz.model.ContactData;
 import org.springframework.stereotype.Service;
 
@@ -21,12 +22,8 @@ public class AddressService {
     }
 
     public ContactData getAddressByID(long id){
-        for(ContactData contactData:contactDatalist){
-            if(contactData.getId()==id){
-                return contactData;
-            }
-        }
-        return null;
+        return contactDatalist.stream()
+                .filter(e -> e.getId() == id).findFirst().orElseThrow(() -> new ContactNotFoundException(id));
     }
 
     public ContactData creatingUser(ContactDTO contactDTO){
